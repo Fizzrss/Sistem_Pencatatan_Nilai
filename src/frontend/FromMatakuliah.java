@@ -8,14 +8,14 @@ package frontend;
  *
  * @author MyBook Hype AMD
  */
-public class FormMahasiswa extends javax.swing.JFrame {
+public class FromMatakuliah extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FormMahasiswa.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FromMatakuliah.class.getName());
 
     /**
-     * Creates new form FormMahasiswa
+     * Creates new form FromMatakuliah
      */
-    public FormMahasiswa() {
+    public FromMatakuliah() {
         initComponents();
     }
 
@@ -66,7 +66,7 @@ public class FormMahasiswa extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FormMahasiswa().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new FromMatakuliah().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
