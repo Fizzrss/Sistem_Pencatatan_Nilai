@@ -220,4 +220,8 @@ public class Mahasiswa {
             return false;
         }
     }
+    
+    public String toString(){
+        return nama;
+    }
 }

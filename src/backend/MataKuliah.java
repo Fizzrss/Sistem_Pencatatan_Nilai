@@ -162,4 +162,8 @@ public class MataKuliah {
             return false;
         }
     }
+    
+    public String toString(){
+        return nama;
+    }
 }
