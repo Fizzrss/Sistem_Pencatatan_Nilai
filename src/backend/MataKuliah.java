@@ -3,16 +3,16 @@ package backend;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class Matakuliah {
+public class MataKuliah {
     private int idMatakuliah;
     private String nama;
     private int sks;
 
     // --- Konstruktor ---
-    public Matakuliah() {
+    public MataKuliah() {
     }
 
-    public Matakuliah(String nama, int sks) {
+    public MataKuliah(String nama, int sks) {
         this.nama = nama;
         this.sks = sks;
     }
@@ -44,8 +44,8 @@ public class Matakuliah {
 
     // --- Method Helper (CRUD) ---
 
-    public static Matakuliah getById(int id) {
-        Matakuliah mk = null;
+    public static MataKuliah getById(int id) {
+        MataKuliah mk = null;
         String sql = "SELECT * FROM matakuliah WHERE id_matakuliah = ?";
 
         try (Connection conn = DBHelper.getConnection();
@@ -55,7 +55,7 @@ public class Matakuliah {
             
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    mk = new Matakuliah();
+                    mk = new MataKuliah();
                     mk.setIdMatakuliah(rs.getInt("id_matakuliah"));
                     mk.setNama(rs.getString("nama"));
                     mk.setSks(rs.getInt("sks"));
@@ -67,8 +67,8 @@ public class Matakuliah {
         return mk;
     }
 
-    public static ArrayList<Matakuliah> getAll() {
-        ArrayList<Matakuliah> list = new ArrayList<>();
+    public static ArrayList<MataKuliah> getAll() {
+        ArrayList<MataKuliah> list = new ArrayList<>();
         String sql = "SELECT * FROM matakuliah";
 
         try (Connection conn = DBHelper.getConnection();
@@ -76,7 +76,7 @@ public class Matakuliah {
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                Matakuliah mk = new Matakuliah();
+                MataKuliah mk = new MataKuliah();
                 mk.setIdMatakuliah(rs.getInt("id_matakuliah"));
                 mk.setNama(rs.getString("nama"));
                 mk.setSks(rs.getInt("sks"));
@@ -88,8 +88,8 @@ public class Matakuliah {
         return list;
     }
 
-    public static ArrayList<Matakuliah> getAll(String keyword) {
-        ArrayList<Matakuliah> list = new ArrayList<>();
+    public static ArrayList<MataKuliah> getAll(String keyword) {
+        ArrayList<MataKuliah> list = new ArrayList<>();
         String sql = "SELECT * FROM matakuliah WHERE nama LIKE ?";
 
         try (Connection conn = DBHelper.getConnection();
@@ -99,7 +99,7 @@ public class Matakuliah {
             
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    Matakuliah mk = new Matakuliah();
+                    MataKuliah mk = new MataKuliah();
                     mk.setIdMatakuliah(rs.getInt("id_matakuliah"));
                     mk.setNama(rs.getString("nama"));
                     mk.setSks(rs.getInt("sks"));
@@ -114,7 +114,7 @@ public class Matakuliah {
 
     public void save() {
         if (this.idMatakuliah == 0) {
-            // Proses Insert (id auto increment)
+            // Insert
             String sql = "INSERT INTO matakuliah (nama, sks) VALUES (?, ?)";
             
             try (Connection conn = DBHelper.getConnection();
@@ -133,7 +133,7 @@ public class Matakuliah {
                 e.printStackTrace();
             }
         } else {
-            // Proses Update
+            // Update
             String sql = "UPDATE matakuliah SET nama=?, sks=? WHERE id_matakuliah=?";
             
             try (Connection conn = DBHelper.getConnection();
