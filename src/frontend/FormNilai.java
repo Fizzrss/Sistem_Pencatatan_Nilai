@@ -3,6 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package frontend;
+import backend.*; // Import package backend
+import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -15,10 +20,68 @@ public class FormNilai extends javax.swing.JFrame {
     /**
      * Creates new form FormNilai
      */
+    private int idNilai = 0;
     public FormNilai() {
         initComponents();
+        tampilkanCmbMahasiswa();
+        tampilkanCmbDosen();
+        tampilkanCmbMatakuliah();
+        tampilkanData();
+        kosongkanForm();
+        
+        tblNilai.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
     }
 
+    public void kosongkanForm() {
+        idNilai = 0;
+        txtNilaiTugas.setText("");
+        txtNilaiUts.setText("");
+        txtNilaiUas.setText("");
+        if(cmbMahasiswa.getItemCount() > 0) cmbMahasiswa.setSelectedIndex(0);
+        if(cmbDosen.getItemCount() > 0) cmbDosen.setSelectedIndex(0);
+        if(cmbMatakuliah.getItemCount() > 0) cmbMatakuliah.setSelectedIndex(0);
+    }
+    
+    public void tampilkanCmbMahasiswa() {
+        cmbMahasiswa.setModel(new DefaultComboBoxModel(Mahasiswa.getAll().toArray()));
+    }
+
+    public void tampilkanCmbDosen() {
+        cmbDosen.setModel(new DefaultComboBoxModel(Dosen.getAll().toArray()));
+    }
+
+    public void tampilkanCmbMatakuliah() {
+        cmbMatakuliah.setModel(new DefaultComboBoxModel(MataKuliah.getAll().toArray()));
+    }
+    public void tampilkanData() {
+        String[] kolom = {"ID", "Mahasiswa", "Dosen", "Matakuliah", "Tugas", "UTS", "UAS", "Akhir"};
+        ArrayList<Nilai> list = new ArrayList<>();
+        
+        String keyword = txtCari.getText();
+        if (keyword.equals("")) {
+            list = Nilai.getAll();
+        } else {
+            list = Nilai.getAll(keyword);
+        }
+
+        Object[][] rowData = new Object[list.size()][8];
+
+        for (int i = 0; i < list.size(); i++) {
+            rowData[i][0] = list.get(i).getId_nilai();
+            rowData[i][1] = list.get(i).getMahasiswa().getNama(); 
+            rowData[i][2] = list.get(i).getDosen().getNama();
+            rowData[i][3] = list.get(i).getMatakuliah().getNama();
+            rowData[i][4] = list.get(i).getNilai_tugas();
+            rowData[i][5] = list.get(i).getNilai_uts();
+            rowData[i][6] = list.get(i).getNilai_uas();
+            rowData[i][7] = list.get(i).getNilai_akhir();
+        }
+        tblNilai.setModel(new DefaultTableModel(rowData, kolom));
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,22 +91,270 @@ public class FormNilai extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblNilai = new javax.swing.JTable();
+        cmbMahasiswa = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
+        cmbDosen = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        cmbMatakuliah = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        txtNilaiTugas = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        txtNilaiUts = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        txtNilaiUas = new javax.swing.JTextField();
+        btnSimpan = new javax.swing.JButton();
+        btnTambah = new javax.swing.JButton();
+        btnHapus = new javax.swing.JButton();
+        btnCari = new javax.swing.JButton();
+        txtCari = new javax.swing.JTextField();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("Form Pencatatan Nilai");
+
+        jLabel2.setText("Nama Mahasiswa");
+
+        tblNilai.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "id", "Nama Mahasiswa", "Nama Matakuliah", "Nama Dosen", "Nilai Tugas", "Nilai UTS", "Nilai UAS", "Nilai Akhir"
+            }
+        ));
+        jScrollPane1.setViewportView(tblNilai);
+
+        cmbMahasiswa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel3.setText("Nama Dosen");
+
+        cmbDosen.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel4.setText("Nama Matakuliah");
+
+        cmbMatakuliah.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbMatakuliah.addActionListener(this::cmbMatakuliahActionPerformed);
+
+        jLabel5.setText("Nilai Tugas");
+
+        txtNilaiTugas.addActionListener(this::txtNilaiTugasActionPerformed);
+
+        jLabel6.setText("Nilai UTS");
+
+        jLabel7.setText("Nilai UAS");
+
+        btnSimpan.setText("SImpan");
+        btnSimpan.addActionListener(this::btnSimpanActionPerformed);
+
+        btnTambah.setText("Tambah Data");
+        btnTambah.addActionListener(this::btnTambahActionPerformed);
+
+        btnHapus.setText("Hapus");
+        btnHapus.addActionListener(this::btnHapusActionPerformed);
+
+        btnCari.setText("Cari");
+        btnCari.addActionListener(this::btnCariActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(61, 61, 61)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cmbMatakuliah, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4)
+                                    .addComponent(cmbDosen, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(btnTambah, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(btnHapus)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(btnCari))
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 875, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(cmbMahasiswa, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel2))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 178, Short.MAX_VALUE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtNilaiTugas, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel5)
+                                        .addComponent(txtNilaiUts, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel6)
+                                        .addComponent(txtNilaiUas, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel7)))
+                                .addComponent(btnSimpan))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(434, 434, 434)
+                        .addComponent(jLabel1)))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbMahasiswa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNilaiTugas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbDosen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtNilaiUts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbMatakuliah, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtNilaiUas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addComponent(btnSimpan)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnTambah)
+                    .addComponent(btnHapus)
+                    .addComponent(btnCari)
+                    .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
+        kosongkanForm();
+    }//GEN-LAST:event_btnTambahActionPerformed
+
+    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
+        DefaultTableModel model = (DefaultTableModel) tblNilai.getModel();
+        int row = tblNilai.getSelectedRow();
+        
+        if (row >= 0) {
+            Nilai.delete(idNilai);
+            kosongkanForm();
+            tampilkanData();
+        } else {
+            JOptionPane.showMessageDialog(this, "Pilih data yang ingin dihapus!");
+        }
+    }//GEN-LAST:event_btnHapusActionPerformed
+
+    private void cmbMatakuliahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMatakuliahActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbMatakuliahActionPerformed
+
+    private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
+        Nilai n = new Nilai();
+        
+        n.setId_nilai(idNilai);
+        
+        n.setMahasiswa((Mahasiswa) cmbMahasiswa.getSelectedItem());
+        n.setDosen((Dosen) cmbDosen.getSelectedItem());
+        n.setMatakuliah((MataKuliah) cmbMatakuliah.getSelectedItem());
+        
+        try {
+            int tugas = Integer.parseInt(txtNilaiTugas.getText());
+            int uts = Integer.parseInt(txtNilaiUts.getText());
+            int uas = Integer.parseInt(txtNilaiUas.getText());
+            
+            n.setNilai_tugas(tugas);
+            n.setNilai_uts(uts);
+            n.setNilai_uas(uas);
+
+            int akhir = (tugas + uts + uas) / 3;
+            n.setNilai_akhir(akhir);
+
+            n.save();
+
+            kosongkanForm();
+            tampilkanData();
+            
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Nilai harus berupa angka!");
+        }
+    }//GEN-LAST:event_btnSimpanActionPerformed
+
+    private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariActionPerformed
+        tampilkanData();
+    }//GEN-LAST:event_btnCariActionPerformed
+
+    private void txtNilaiTugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNilaiTugasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNilaiTugasActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {                                     
+        DefaultTableModel model = (DefaultTableModel)tblNilai.getModel();
+        int row = tblNilai.getSelectedRow();
+        
+        this.idNilai = Integer.parseInt(model.getValueAt(row, 0).toString());
+        
+        Nilai n = Nilai.getById(this.idNilai);
+        
+        if (n != null) {
+            txtNilaiTugas.setText(String.valueOf(n.getNilai_tugas()));
+            txtNilaiUts.setText(String.valueOf(n.getNilai_uts()));
+            txtNilaiUas.setText(String.valueOf(n.getNilai_uas()));
+
+            getModelCmb(cmbMahasiswa, n.getMahasiswa().getIdMahasiswa());
+            getModelCmb(cmbDosen, n.getDosen().getIdDosen());
+            getModelCmb(cmbMatakuliah, n.getMatakuliah().getIdMatakuliah());
+        }
+    }
+    
+    private void getModelCmb(javax.swing.JComboBox cmb, int id) {
+        for (int i = 0; i < cmb.getItemCount(); i++) {
+            Object obj = cmb.getItemAt(i);
+            
+            if (obj instanceof Mahasiswa) {
+                if (((Mahasiswa) obj).getIdMahasiswa() == id) {
+                    cmb.setSelectedIndex(i);
+                    break;
+                }
+            } else if (obj instanceof Dosen) {
+                if (((Dosen) obj).getIdDosen() == id) {
+                    cmb.setSelectedIndex(i);
+                    break;
+                }
+            } else if (obj instanceof MataKuliah) {
+                if (((MataKuliah) obj).getIdMatakuliah() == id) {
+                    cmb.setSelectedIndex(i);
+                    break;
+                }
+            }
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -65,10 +376,44 @@ public class FormNilai extends javax.swing.JFrame {
         }
         //</editor-fold>
 
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(FormNilai.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FormNilai().setVisible(true));
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new FormNilai().setVisible(true);
+            }
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCari;
+    private javax.swing.JButton btnHapus;
+    private javax.swing.JButton btnSimpan;
+    private javax.swing.JButton btnTambah;
+    private javax.swing.JComboBox<String> cmbDosen;
+    private javax.swing.JComboBox<String> cmbMahasiswa;
+    private javax.swing.JComboBox<String> cmbMatakuliah;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblNilai;
+    private javax.swing.JTextField txtCari;
+    private javax.swing.JTextField txtNilaiTugas;
+    private javax.swing.JTextField txtNilaiUas;
+    private javax.swing.JTextField txtNilaiUts;
     // End of variables declaration//GEN-END:variables
 }
